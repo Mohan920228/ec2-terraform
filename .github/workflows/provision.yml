@@ -38,12 +38,12 @@ jobs:
         id: planout
         run: echo "plan=tfplan" >> $GITHUB_OUTPUT
       - name: terraform apply
-        run: terraform apply ${{steps.planout.outputs.plan}} -auto-approve
+        run: terraform apply ${{steps.planout.outputs.plan}}
       - name: output ec2 ip
         id: pvt_ip
         run: |
           EC2_IP=$(terraform output -raw ec2_ip)
-          echo "private_ip=EC2_IP" >> $GITHUB_OUTPUT
+          echo "private_ip=$EC2_IP" >> $GITHUB_OUTPUT
       - name: print ec2 ip
         run: |
           echo "EC2 ip address: ${{steps.pvt_ip.outputs.private_ip}} "
@@ -63,4 +63,4 @@ jobs:
         with:
           terraform_version: "1.14.5"
       - name: terraform destroy
-        run: terrafrom destroy -auto-approve
+        run: terraform destroy -auto-approve
