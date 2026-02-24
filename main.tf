@@ -6,7 +6,7 @@ resource "aws_instance" "ec2_instance" {
   instance_type          = var.instance_type
   tags = {
     "Name"       = "Demo-ec2"
-    "Owner"      = "703329362"
+    "Owner"      = "mohan.ravi@genpact.com"
     "Owner mail" = "mohan.ravi@genpact.com"
   }
 }
