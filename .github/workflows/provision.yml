@@ -1,4 +1,5 @@
 name: ec2provision
+run-name: we are doing - ${{inputs.provision}}
 on:
   workflow_dispatch:
     inputs:
@@ -49,6 +50,8 @@ jobs:
           echo "EC2 ip address: ${{steps.pvt_ip.outputs.private_ip}}"
   deletion:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     if: inputs.provision == 'destroy'
     steps:
       - name: checkout code
