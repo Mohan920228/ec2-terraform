@@ -33,7 +33,7 @@ jobs:
       - name: terraform init
         run: terraform init
       - name: terraform plan
-        run: terrafrom plan -out=tfplan
+        run: terraform plan -out=tfplan
       - name: terraform plan output
         id: planout
         run: echo "plan=tfplan" >> $GITHUB_OUTPUT
