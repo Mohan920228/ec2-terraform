@@ -42,11 +42,11 @@ jobs:
       - name: output ec2 ip
         id: pvt_ip
         run: |
-          EC2_IP=$(terraform output -raw ec2_ip)
+          EC2_IP=$(terraform output -raw ec2_private_ip)
           echo "private_ip=$EC2_IP" >> $GITHUB_OUTPUT
       - name: print ec2 ip
         run: |
-          echo "EC2 ip address: ${{steps.pvt_ip.outputs.private_ip}} "
+          echo "EC2 ip address: ${{steps.pvt_ip.outputs.private_ip}}"
   deletion:
     runs-on: ubuntu-latest
     if: inputs.provision == 'destroy'
