@@ -13,6 +13,8 @@ on:
 jobs:
   provision:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     if: inputs.provision == 'create'
     steps:
       - name: checkout code
@@ -49,5 +51,16 @@ jobs:
     runs-on: ubuntu-latest
     if: inputs.provision == 'destroy'
     steps:
+      - name: checkout code
+        uses: actions/checkout@v5
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::353075014684:role/Genpact-POC-PowerUser
+          aws-region: us-east-1
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.14.5"
       - name: terraform destroy
         run: terrafrom destroy -auto-approve
