@@ -11,3 +11,6 @@ variable "security_group" {
   default = ["sg-0255e9a92d037cd32"]
   type    = list(string)
 }
+variable "instance_type" {
+  default = "t3a.nano"
+}

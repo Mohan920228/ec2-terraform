@@ -3,6 +3,7 @@ resource "aws_instance" "ec2_instance" {
   subnet_id              = var.subnet_id
   key_name               = var.key_name
   vpc_security_group_ids = var.security_group
+  instance_type          = var.instance_type
   tags = {
     "Name"       = "Demo-ec2"
     "Owner"      = "703329362"
