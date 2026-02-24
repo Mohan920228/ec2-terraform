@@ -1,0 +1,53 @@
+name: ec2provision
+on:
+  workflow_dispatch:
+    inputs:
+      provision:
+        required: true
+        default: provision
+        type: choice
+        description: provide your input whether to create or destroy
+        options:
+          - create
+          - destroy
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    if: inputs.provision == 'create'
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v5
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::353075014684:role/Genpact-POC-PowerUser
+          aws-region: us-east-1
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.14.5"
+      - name: terraform format
+        run: terraform fmt
+      - name: terraform init
+        run: terraform init
+      - name: terraform plan
+        run: terrafrom plan -out=tfplan
+      - name: terraform output
+        id: plan
+        run: echo "plan=tfplan" >> $GITHUB_OUTPUT
+      - name: terraform apply
+        run: terraform apply -auto-approve
+      - name: output ec2 ip
+        id: pvt_ip
+        run: |
+          EC2_IP=$(terraform output -raw ec2_ip)
+          echo "private_ip=EC2_IP" >> $GITHUB_OUTPUT
+      - name: print ec2 ip
+        run: |
+          echo "EC2 ip address: ${{steps.pvt_ip.outputs.private_ip}} "
+  deletion:
+    runs-on: ubuntu-latest
+    if: inputs.provision == 'destroy'
+    steps:
+      - name: terraform destroy
+        run: terrafrom destroy -auto-approve
