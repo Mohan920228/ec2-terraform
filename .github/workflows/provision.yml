@@ -37,9 +37,6 @@ jobs:
       - name: terraform plan output
         id: planout
         run: echo "plan=tfplan" >> $GITHUB_OUTPUT
-      - name: terraform output
-        id: plan
-        run: echo "plan=tfplan" >> $GITHUB_OUTPUT
       - name: terraform apply
         run: terraform apply ${{steps.planout.outputs.plan}} -auto-approve
       - name: output ec2 ip
